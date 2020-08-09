@@ -1,0 +1,38 @@
+module FSoup.Core.Tests.UnitTests.Attributes
+
+open FSoup.Core
+open Microsoft.VisualStudio.TestTools.UnitTesting
+open Parsing
+open Types
+
+[<TestClass>]
+type AttributeUnitTests () =
+
+    [<TestMethod>]
+    member this.ParseId_Valid_SomeId () =
+        let text = "id=\"hello\""
+        let expected = Some(Id "hello")
+        
+        let result = run parseId text 
+        
+        let actual =
+            match result with
+            | Success(att, _) -> Some att
+            | _ -> None
+        
+        Assert.AreEqual(expected, actual)
+
+    [<TestMethod>]
+    member this.ParseId_Invalid_None () =
+        let text = "class=\"hello\""
+        let expected = None
+        
+        let result = run parseId text 
+        
+        let actual =
+            match result with
+            | Success(att, _) -> Some att
+            | _ -> None
+        
+        Assert.AreEqual(expected, actual)
+
