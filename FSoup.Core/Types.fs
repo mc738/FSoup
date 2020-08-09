@@ -132,8 +132,7 @@ let parseDiv =
 
 let parseH1 =
     parseElement H1 "h1"
-    
-    
+        
 parseElementsRef := choice
     [
         parseDiv
