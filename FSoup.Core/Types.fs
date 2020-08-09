@@ -119,13 +119,9 @@ let parseElementContent =
 ///
 /// let parseDiv = parseElement Div "div"
 let parseElement ctor name =
-    let attributes = parseOpenTag name
-    let content = parseElementContent
-    let _ = parseCloseTag
     (parseOpenTag name .>>. parseElementContent) .>> parseCloseTag name 
     |>> elementContractor ctor
     
-
 /// Parse a div element.
 ///
 /// Example
@@ -136,3 +132,10 @@ let parseDiv =
 
 let parseH1 =
     parseElement H1 "h1"
+    
+    
+parseElementsRef := choice
+    [
+        parseDiv
+        parseH1
+    ] |> many |>> Elements
