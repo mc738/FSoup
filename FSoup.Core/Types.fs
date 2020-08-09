@@ -25,11 +25,12 @@ type Element =
 and HtmlContent =
     | Elements of Element list
     | Text of string
-    
-and HtmlElement =
-    { Attributes: Attribute list }
 
-let elementContractor ctor a = { Attributes = a } |> ctor
+and HtmlElement =
+    { Attributes: Attribute list
+      Content: HtmlContent }
+
+let elementContractor ctor (a, c) = { Attributes = a; Content = c} |> ctor
 
 let unescapedChar =
     let label = "char"
@@ -102,27 +103,36 @@ let parseOpenTag name =
 let parseCloseTag name =
     parseStr ("</" + name + ">")
 
-// let parseElementContent =
-//    spaces >>.
+let parseText =
+    let label = "char"
+    many1 (satisfy (fun ch -> ch <> '<') label) |>> string |>> Text
 
-// let attributes = createParserForwardedToRef<Attribute>()
+let (parseElements, parseElementsRef) = createParserForwardedToRef<HtmlContent> ()
 
+let parseElementContent =
+    spaces >>. parseText <|> parseElements .>> spaces
+
+/// Helper function for parsing an element.
+/// It takes a element type and the element name.
+///
+/// Example
+///
+/// let parseDiv = parseElement Div "div"
 let parseElement ctor name =
     let attributes = parseOpenTag name
-    let body = quotedString
+    let content = parseElementContent
     let _ = parseCloseTag
-    parseOpenTag name .>> quotedString .>> parseCloseTag name |>> elementContractor ctor
-      
-    // returnParser ( c)
+    (parseOpenTag name .>>. parseElementContent) .>> parseCloseTag name 
+    |>> elementContractor ctor
     
-    
-    
+
+/// Parse a div element.
+///
+/// Example
+///
+/// let result = run parseDiv "<div id=\"test\"></div>"
 let parseDiv =
     parseElement Div "div"
 
-//
-//    let attributes = parseOpenTag "div"
-//    let body = quotedString
-//    let _ = parseCloseTag
-//
-//    attributes |>> Div
+let parseH1 =
+    parseElement H1 "h1"
