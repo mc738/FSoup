@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSoup.Core", "FSoup.Core\FSoup.Core.fsproj", "{8F767A0E-B35E-487E-A7E8-1560CEBF6E92}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSoup.App", "FSoup.App\FSoup.App.fsproj", "{8150B94C-D47E-4BF3-9307-041BB181316A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{AB03D807-F1A1-483B-B336-A2B1D7180768}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8F767A0E-B35E-487E-A7E8-1560CEBF6E92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F767A0E-B35E-487E-A7E8-1560CEBF6E92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F767A0E-B35E-487E-A7E8-1560CEBF6E92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F767A0E-B35E-487E-A7E8-1560CEBF6E92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8150B94C-D47E-4BF3-9307-041BB181316A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8150B94C-D47E-4BF3-9307-041BB181316A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8150B94C-D47E-4BF3-9307-041BB181316A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8150B94C-D47E-4BF3-9307-041BB181316A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
