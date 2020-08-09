@@ -35,4 +35,33 @@ type AttributeUnitTests () =
             | _ -> None
         
         Assert.AreEqual(expected, actual)
+        
+        
+    [<TestMethod>]
+    member this.ParseClass_Valid_SomeId () =
+        let text = "class=\"hello\""
+        let expected = Some(Class "hello")
+        
+        let result = run parseClass text 
+        
+        let actual =
+            match result with
+            | Success(att, _) -> Some att
+            | _ -> None
+        
+        Assert.AreEqual(expected, actual)
+
+    [<TestMethod>]
+    member this.ParseClass_Invalid_None () =
+        let text = "id=\"hello\""
+        let expected = None
+        
+        let result = run parseClass text 
+        
+        let actual =
+            match result with
+            | Success(att, _) -> Some att
+            | _ -> None
+        
+        Assert.AreEqual(expected, actual)
 
