@@ -9,7 +9,7 @@ open Html
 type AttributeUnitTests () =
 
     [<TestMethod>]
-    member this.ParseId_Valid_SomeId () =
+    member this.ParseId_VaLue_SomeId () =
         let text = "id=\"hello\""
         let expected = Some(Id "hello")
         

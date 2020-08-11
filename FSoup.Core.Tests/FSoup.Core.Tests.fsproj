@@ -12,6 +12,7 @@
         <Compile Include="UnitTests\Html\Elements.fs" />
         <Folder Include="UnitTests\Json" />
         <Folder Include="UnitTests\Xml" />
+        <Compile Include="IntergrationTests\Html\ParseDocument.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
 

@@ -20,6 +20,7 @@ type HtmlElementType =
     | Img of HtmlElement
     | Li of HtmlElement
     | Ul of HtmlElement
+    | P of HtmlElement
 
 and HtmlContent =
     | Elements of HtmlElementType list
@@ -131,9 +132,13 @@ let parseDiv =
 
 let parseH1 =
     parseElement H1 "h1"
+
+let parseP =
+    parseElement P "p"
         
 parseElementsRef := choice
     [
         parseDiv
         parseH1
+        parseP
     ] |> many |>> Elements
