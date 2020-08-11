@@ -9,6 +9,9 @@
         <Compile Include="Parsing.fs" />
         <Compile Include="Scrapper.fs" />
         <Compile Include="Types.fs" />
+        <Compile Include="Json.fs" />
+        <Compile Include="Html.fs" />
+        <Compile Include="Xml.fs" />
     </ItemGroup>
 
 </Project>
