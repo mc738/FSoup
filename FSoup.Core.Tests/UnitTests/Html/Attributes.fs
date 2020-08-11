@@ -1,9 +1,9 @@
-module FSoup.Core.Tests.UnitTests.Attributes
+module FSoup.Core.Tests.UnitTests.Html.Attributes
 
 open FSoup.Core
 open Microsoft.VisualStudio.TestTools.UnitTesting
 open Parsing
-open Types
+open Html
 
 [<TestClass>]
 type AttributeUnitTests () =

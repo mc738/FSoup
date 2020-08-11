@@ -7,16 +7,14 @@ open FSoup.Core
 
 open Parsing
 
-type Attribute =
+type HtmlAttribute =
     | Id of string
     | Class of string // list
     | Height of int
     | Href of string
     | Width of int
 
-type Attributes = Attribute list
-
-type Element =
+type HtmlElementType =
     | Div of HtmlElement
     | H1 of HtmlElement
     | Img of HtmlElement
@@ -24,11 +22,11 @@ type Element =
     | Ul of HtmlElement
 
 and HtmlContent =
-    | Elements of Element list
+    | Elements of HtmlElementType list
     | Text of string
 
 and HtmlElement =
-    { Attributes: Attribute list
+    { Attributes: HtmlAttribute list option
       Content: HtmlContent }
 
 let elementContractor ctor (a, c) = { Attributes = a; Content = c} |> ctor
@@ -99,14 +97,14 @@ let parseEndOpenTag =
     parseChar '>'
 
 let parseOpenTag name =
-    parseBeginOpeningTag name >>. spaces >>. parseAttributes .>> parseEndOpenTag
+    parseBeginOpeningTag name >>. spaces  >>. opt (parseAttributes) .>> parseEndOpenTag
 
 let parseCloseTag name =
     parseStr ("</" + name + ">")
 
 let parseText =
     let label = "char"
-    many1 (satisfy (fun ch -> ch <> '<') label) |>> string |>> Text
+    many1 (satisfy (fun ch -> ch <> '<') label) |>> charListToStr |>> Text
 
 let (parseElements, parseElementsRef) = createParserForwardedToRef<HtmlContent> ()
 

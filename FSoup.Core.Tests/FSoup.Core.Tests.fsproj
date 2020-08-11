@@ -8,8 +8,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="Tests.fs" />
-        <Compile Include="UnitTests\Attributes.fs" />
+        <Compile Include="UnitTests\Html\Attributes.fs" />
+        <Compile Include="UnitTests\Html\Elements.fs" />
+        <Folder Include="UnitTests\Json" />
+        <Folder Include="UnitTests\Xml" />
         <Compile Include="Program.fs" />
     </ItemGroup>
 
