@@ -65,3 +65,17 @@ type AttributeUnitTests () =
         
         Assert.AreEqual(expected, actual)
 
+    [<TestMethod>]
+    member this.``Parse single quote id`` () =
+        let text = "id='hello'"
+        let expected = Some (Id "hello")
+        
+        let result = run parseId text 
+        
+        let actual =
+            match result with
+            | Success(att, _) -> Some att
+            | _ -> None
+        
+        Assert.AreEqual(expected, actual)
+    

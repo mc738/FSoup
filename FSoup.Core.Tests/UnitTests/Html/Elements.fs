@@ -64,3 +64,17 @@ type AttributeUnitTests () =
             | _ -> None
         
         Assert.AreEqual(expected, actual)
+
+    [<TestMethod>]    
+    member _.``Parse div with custom elements`` () =
+        let text = "<div id=\"id\" data-value=\"Hello, World!\"></div>"
+        let expected = Some(Div { Attributes = Some [ Id "id"; Custom ("data-value", "Hello, World!") ]; Content = Elements [] })
+        
+        let result = run parseDiv text
+        
+        let actual =
+            match result with
+            | Success(att, _) -> Some att
+            | _ -> None
+            
+        Assert.AreEqual(expected, actual)

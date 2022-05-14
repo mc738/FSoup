@@ -13,6 +13,7 @@ type HtmlAttribute =
     | Height of int
     | Href of string
     | Width of int
+    | Custom of string * string
 
 type HtmlElementType =
     | Div of HtmlElement
@@ -32,9 +33,9 @@ and HtmlElement =
 
 let elementContractor ctor (a, c) = { Attributes = a; Content = c} |> ctor
 
-let unescapedChar =
+let unescapedChar quoteChar =
     let label = "char"
-    satisfy (fun ch -> ch <> '\\' && ch <> '\"') label
+    satisfy (fun ch -> ch <> '\\' && ch <> quoteChar) label
 
 let escapedChar =
     [ ("\\\"", '\"')
@@ -60,16 +61,35 @@ let unicodeChar =
     backslash >>. uChar >>. hexdigit .>>. hexdigit .>>. hexdigit .>>. hexdigit |>> convertToChar
 
 let quotedString =
-    let quote = parseChar '\"' <?> "quote"
-    let c = unescapedChar <|> escapedChar <|> unicodeChar
-    quote >>. manyChars c .>> quote
+    let singleQuote = parseChar '\'' <?> "single quote"
+    let doubleQuote = parseChar '\"' <?> "double quote"
+    
+    
+    //let quote = parseChar '\"' <?> "quote"
+    let c q = unescapedChar q <|> escapedChar <|> unicodeChar
+    satisfy (fun c -> c = '\'' || c = '\"') "quote"
+    >>= (fun q ->
+        if q = '\'' then manyChars (c q) .>> singleQuote
+        else manyChars (c q) .>> doubleQuote)
+
+    //quote >>. manyChars c .>> quote
 
 let parseAttributeKey (name: string) =
     parseStr (name + "=") <?> "attribute key"
 
+let parseCustomAttributeKey c =
+    many1 (satisfy (fun ch -> ch <> '=') "attribute key") |>> fun cl -> [c] @ cl |> charListToStr
+    //()
+
 let parseAttribute name =
     parseAttributeKey name >>. quotedString <?> "attribute value"
 //parseEndAttribute
+
+let parseCustomAttribute =
+    // Test the first character to see if it's `>` (end of attributes).
+    // If not this has already been consumed so pass it on to `parseCustomAttributeKey`.
+    satisfy (fun ch -> ch <> '>') "attribute key"
+    >>= (fun c -> (parseCustomAttributeKey c .>> parseChar '=') .>>. quotedString <?> "attribute value" |>> Custom)
 
 let parseId =
     parseAttribute "id" |>> Id <?> "id"
@@ -86,9 +106,8 @@ let parseHeight =
 let parseWidth =
     parseAttribute "width" |>> int |>> Width <?> "width"
 
-
 let parseAttributes =
-    let attr = choice [ parseId; parseClass; parseHref; parseHeight; parseWidth ]
+    let attr = choice [ parseId; parseClass; parseHref; parseHeight; parseWidth; parseCustomAttribute ]
     sepBy1 attr spaces
 
 let parseBeginOpeningTag name =
